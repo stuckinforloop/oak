@@ -1,0 +1,7 @@
+packages:
+
+redactKeys:
+  - StringValue
+  - boolvalue
+
+redactMessage: "[REDACTED]"

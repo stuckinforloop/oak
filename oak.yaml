@@ -1,0 +1,20 @@
+# Oak Configuration File
+# This file configures the Oak code generation tool for structured logging
+
+# List of packages to scan for //go:generate oak directives
+# If empty or omitted, Oak will process the current directory
+packages:
+
+# List of field names to automatically redact (case-insensitive matching)
+# These fields will be logged with the redactMessage instead of their actual values
+redactKeys:
+  - password
+  - secret
+  - token
+  - apikey
+  - api_key
+  - privatekey
+  - private_key
+
+# Message to use for redacted fields (defaults to "[REDACTED]" if not specified)
+redactMessage: "[REDACTED]"
