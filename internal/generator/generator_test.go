@@ -38,7 +38,7 @@ func TestGenerateForStructs(t *testing.T) {
 		t.Errorf("Expected package name 'main', got %s", result.PackageName)
 	}
 
-	if !strings.HasSuffix(result.FilePath, "main_logvalue.go") {
+	if !strings.HasSuffix(result.FilePath, "oak_gen.go") {
 		t.Errorf("Expected file path to end with 'main_logvalue.go', got %s", result.FilePath)
 	}
 

@@ -11,7 +11,7 @@ import (
 	"github.com/stuckinforloop/oak/internal/writer"
 )
 
-const version = "v0.0.1"
+var version string
 
 func main() {
 	if err := run(os.Args[1:]); err != nil {
@@ -51,7 +51,7 @@ func run(args []string) error {
 
 	// Determine what to process
 	target := opts.GetProcessingTarget()
-	
+
 	// Get the paths to process
 	paths, err := getProcessingPaths(target, cfg)
 	if err != nil {
@@ -94,7 +94,7 @@ func run(args []string) error {
 	// Generate code for each package
 	gen := generator.New(cfg)
 	fileWriter := writer.New()
-	
+
 	var generatedFiles []string
 
 	for packageName, structs := range packageStructs {
@@ -110,7 +110,7 @@ func run(args []string) error {
 		generatedFiles = append(generatedFiles, result.FilePath)
 	}
 
-	fmt.Printf("Successfully processed %d struct(s) in %d package(s)\n", 
+	fmt.Printf("Successfully processed %d struct(s) in %d package(s)\n",
 		len(allStructs), len(packageStructs))
 
 	return nil
@@ -121,15 +121,15 @@ func getProcessingPaths(target *cli.ProcessingTarget, cfg *config.Config) ([]str
 	case cli.ModeSourceFile, cli.ModePackage:
 		// Use paths from flags
 		return target.Paths, nil
-		
+
 	case cli.ModePositional:
 		// Expand positional arguments
 		return cli.ExpandPaths(target.Paths)
-		
+
 	case cli.ModeConfig:
 		// Use paths from configuration
 		return cli.ExpandPaths(cfg.GetPackages())
-		
+
 	default:
 		return nil, fmt.Errorf("unknown processing mode")
 	}
@@ -137,11 +137,11 @@ func getProcessingPaths(target *cli.ProcessingTarget, cfg *config.Config) ([]str
 
 func groupStructsByPackage(structs []parser.StructInfo) map[string][]parser.StructInfo {
 	groups := make(map[string][]parser.StructInfo)
-	
+
 	for _, s := range structs {
 		groups[s.PackageName] = append(groups[s.PackageName], s)
 	}
-	
+
 	return groups
 }
 

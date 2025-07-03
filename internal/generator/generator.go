@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
-	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -12,6 +11,8 @@ import (
 	"github.com/stuckinforloop/oak/internal/parser"
 	"github.com/stuckinforloop/oak/internal/types"
 )
+
+const outputFilename = "oak_gen.go"
 
 // GenerationResult represents the result of code generation
 type GenerationResult struct {
@@ -54,7 +55,6 @@ func (g *Generator) GenerateForStructs(structs []parser.StructInfo) (*Generation
 
 	// All structs should be from the same package
 	packageName := structs[0].PackageName
-	packageDir := filepath.Dir(structs[0].FilePath)
 
 	// Filter structs that have loggable fields
 	var validStructs []StructTemplateData
@@ -88,11 +88,9 @@ func (g *Generator) GenerateForStructs(structs []parser.StructInfo) (*Generation
 	}
 
 	// Determine output file path
-	outputFile := filepath.Join(packageDir, packageName+"_logvalue.go")
-
 	result := &GenerationResult{
 		PackageName: packageName,
-		FilePath:    outputFile,
+		FilePath:    outputFilename,
 		Content:     string(formatted),
 	}
 

@@ -201,24 +201,6 @@ func TestCleanupBackups(t *testing.T) {
 	}
 }
 
-func TestGetOutputFileName(t *testing.T) {
-	testCases := []struct {
-		packageName string
-		expected    string
-	}{
-		{"main", "main_logvalue.go"},
-		{"booking", "booking_logvalue.go"},
-		{"user_service", "user_service_logvalue.go"},
-	}
-
-	for _, tc := range testCases {
-		result := GetOutputFileName(tc.packageName)
-		if result != tc.expected {
-			t.Errorf("GetOutputFileName(%s) = %s, expected %s", tc.packageName, result, tc.expected)
-		}
-	}
-}
-
 func TestIsGeneratedFile(t *testing.T) {
 	tempDir := t.TempDir()
 

@@ -66,7 +66,7 @@ type User struct {
 	}
 
 	parser := New()
-	
+
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Create temporary file
@@ -175,7 +175,7 @@ type AnotherStruct struct {
 
 func TestExtractLogTag(t *testing.T) {
 	parser := New()
-	
+
 	testCases := []struct {
 		tagValue string
 		expected string
@@ -188,7 +188,7 @@ func TestExtractLogTag(t *testing.T) {
 		{"", ""},
 		{"`log:\"\"`", ""},
 	}
-	
+
 	for _, tc := range testCases {
 		result := parser.extractLogTag(tc.tagValue)
 		if result != tc.expected {
@@ -206,7 +206,7 @@ func TestTypeToString(t *testing.T) {
 func TestParsePackage(t *testing.T) {
 	// Create a temporary package directory with multiple files
 	tempDir := t.TempDir()
-	
+
 	// File with Oak directive
 	file1Content := `package testpkg
 
@@ -215,7 +215,7 @@ type User struct {
 	Name string
 	Age  int
 }`
-	
+
 	// File without Oak directive
 	file2Content := `package testpkg
 
@@ -223,7 +223,7 @@ type Product struct {
 	Name  string
 	Price float64
 }`
-	
+
 	// File with Oak directive
 	file3Content := `package testpkg
 
@@ -232,39 +232,39 @@ type Order struct {
 	ID     int
 	UserID int
 }`
-	
+
 	err := os.WriteFile(filepath.Join(tempDir, "user.go"), []byte(file1Content), 0644)
 	if err != nil {
 		t.Fatalf("Failed to create user.go: %v", err)
 	}
-	
+
 	err = os.WriteFile(filepath.Join(tempDir, "product.go"), []byte(file2Content), 0644)
 	if err != nil {
 		t.Fatalf("Failed to create product.go: %v", err)
 	}
-	
+
 	err = os.WriteFile(filepath.Join(tempDir, "order.go"), []byte(file3Content), 0644)
 	if err != nil {
 		t.Fatalf("Failed to create order.go: %v", err)
 	}
-	
+
 	parser := New()
 	result, err := parser.ParsePackage(tempDir)
 	if err != nil {
 		t.Fatalf("Failed to parse package: %v", err)
 	}
-	
+
 	// Should find 2 structs (User and Order) since Product doesn't have Oak directive
 	if len(result.Structs) != 2 {
 		t.Errorf("Expected 2 structs, got %d", len(result.Structs))
 	}
-	
+
 	// Check that we got the right structs
 	structNames := make(map[string]bool)
 	for _, s := range result.Structs {
 		structNames[s.Name] = true
 	}
-	
+
 	if !structNames["User"] {
 		t.Errorf("Expected to find User struct")
 	}
