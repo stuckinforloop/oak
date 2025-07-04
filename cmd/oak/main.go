@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime/debug"
 
 	"github.com/stuckinforloop/oak/internal/cli"
 	"github.com/stuckinforloop/oak/internal/config"
@@ -34,7 +35,7 @@ func run(args []string) error {
 	}
 
 	if opts.Version {
-		fmt.Printf("oak %s\n", version)
+		fmt.Printf("oak %s\n", getBuildVersion())
 		return nil
 	}
 
@@ -114,6 +115,18 @@ func run(args []string) error {
 		len(allStructs), len(packageStructs))
 
 	return nil
+}
+
+func getBuildVersion() string {
+	if version != "" {
+		return version
+	}
+
+	if buildInfo, exists := debug.ReadBuildInfo(); exists {
+		return buildInfo.Main.Version
+	}
+
+	return "unknown"
 }
 
 func getProcessingPaths(target *cli.ProcessingTarget, cfg *config.Config) ([]string, error) {

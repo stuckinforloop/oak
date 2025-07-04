@@ -15,7 +15,7 @@ Oak is a command-line tool that automatically generates `LogValue()` methods for
 ## Installation
 
 ```bash
-go install github.com/stuckinforloop/oak@latest
+go install github.com/stuckinforloop/oak/cmd/oak@latest
 ```
 
 ## Quick Start
